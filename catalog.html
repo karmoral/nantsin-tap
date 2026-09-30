@@ -1067,85 +1067,66 @@
 
         }
         */
+/*
+        ========================================
+        CATEGORÍAS (Nombres cortos sin la ruta completa)
+        ========================================
+        */
 
-function createCategories() {
+        function createCategories() {
 
-    const categorySet = new Set();
+            const categoryMap = new Map();
 
-    products.forEach(product => {
+            products.forEach(product => {
+                const categoryPath = product["Product Category"];
+                if (categoryPath && categoryPath.trim() !== "" && categoryPath !== "Sin categoría") {
+                    // Extraer la última parte de la ruta (ej. "Chocolate", "Plantas de interior en macetas", etc.)
+                    const parts = categoryPath.split(">").map(p => p.trim());
+                    const shortName = parts[parts.length - 1];
+                    
+                    // Guardar mapeo de nombre corto -> ruta completa (o usar el nombre corto para filtrar)
+                    categoryMap.set(shortName, categoryPath);
+                }
+            });
 
-        const category =
-            product["Product Category"];
+            // Limpiar contenedor y agregar botón "Todos"
+            categoriesContainer.innerHTML = `
+                Todos
+            `;
 
-        if (category) {
+            Array.from(categoryMap.keys())
+                .sort()
+                .forEach(shortName => {
+                    const button = document.createElement("button");
+                    button.className = "category-btn";
+                    button.dataset.category = shortName;
+                    button.textContent = shortName;
+                    categoriesContainer.appendChild(button);
+                });
 
-            categorySet.add(
-                category.trim()
-            );
+            // Eventos de clic
+            document
+                .querySelectorAll(".category-btn")
+                .forEach(button => {
+                    button.addEventListener("click", () => {
+                        document
+                            .querySelectorAll(".category-btn")
+                            .forEach(btn =>
+                                btn.classList.remove("active")
+                            );
+
+                        button.classList.add("active");
+
+                        currentCategory =
+                            button.dataset.category;
+
+                        filterProducts();
+                    });
+                });
 
         }
 
-    });
 
-    const categories =
-        Array.from(categorySet);
-
-    // Tomar solamente la última categoría
-    const lastCategory =
-        categories[categories.length - 1];
-
-    if (lastCategory) {
-
-        const button =
-            document.createElement("button");
-
-        button.className =
-            "category-btn";
-
-        button.dataset.category =
-            lastCategory;
-
-        button.textContent =
-            lastCategory;
-
-        categoriesContainer
-            .appendChild(button);
-    }
-
-    // Eventos
-    document
-        .querySelectorAll(".category-btn")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    document
-                        .querySelectorAll(
-                            ".category-btn"
-                        )
-                        .forEach(btn =>
-                            btn.classList.remove(
-                                "active"
-                            )
-                        );
-
-                    button.classList.add(
-                        "active"
-                    );
-
-                    currentCategory =
-                        button.dataset.category;
-
-                    filterProducts();
-
-                }
-            );
-
-        });
-
-}
         /*
         ========================================
         FILTRAR PRODUCTOS
@@ -1175,31 +1156,34 @@ function createCategories() {
                         ).toLowerCase();
 
 
-                    const category =
+                    const categoryPath =
                         String(
                             product["Product Category"] || ""
-                        ).toLowerCase();
+                        );
 
 
                     /*
-                    Buscar
+                    Buscar por texto
                     */
 
                     const matchesSearch =
                         !search ||
                         title.includes(search) ||
                         description.includes(search) ||
-                        category.includes(search);
+                        categoryPath.toLowerCase().includes(search);
 
 
                     /*
-                    Categoría
+                    Filtrar comparando con la última parte de la categoría del producto
                     */
 
-                    const matchesCategory =
-                        currentCategory === "all" ||
-                        product["Product Category"] ===
-                        currentCategory;
+                    let matchesCategory = true;
+
+                    if (currentCategory !== "all") {
+                        const parts = categoryPath.split(">").map(p => p.trim());
+                        const shortName = parts[parts.length - 1];
+                        matchesCategory = (shortName === currentCategory);
+                    }
 
 
                     return (
@@ -1213,7 +1197,6 @@ function createCategories() {
             renderProducts();
 
         }
-
 
         /*
         ========================================
