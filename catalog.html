@@ -980,7 +980,7 @@
         ========================================
         CATEGORÍAS
         ========================================
-        */
+        
 
         function createCategories() {
 
@@ -1028,7 +1028,7 @@
 
             /*
             Eventos
-            */
+            
 
             document
                 .querySelectorAll(".category-btn")
@@ -1066,8 +1066,86 @@
                 });
 
         }
+        */
 
+function createCategories() {
 
+    const categorySet = new Set();
+
+    products.forEach(product => {
+
+        const category =
+            product["Product Category"];
+
+        if (category) {
+
+            categorySet.add(
+                category.trim()
+            );
+
+        }
+
+    });
+
+    const categories =
+        Array.from(categorySet);
+
+    // Tomar solamente la última categoría
+    const lastCategory =
+        categories[categories.length - 1];
+
+    if (lastCategory) {
+
+        const button =
+            document.createElement("button");
+
+        button.className =
+            "category-btn";
+
+        button.dataset.category =
+            lastCategory;
+
+        button.textContent =
+            lastCategory;
+
+        categoriesContainer
+            .appendChild(button);
+    }
+
+    // Eventos
+    document
+        .querySelectorAll(".category-btn")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    document
+                        .querySelectorAll(
+                            ".category-btn"
+                        )
+                        .forEach(btn =>
+                            btn.classList.remove(
+                                "active"
+                            )
+                        );
+
+                    button.classList.add(
+                        "active"
+                    );
+
+                    currentCategory =
+                        button.dataset.category;
+
+                    filterProducts();
+
+                }
+            );
+
+        });
+
+}
         /*
         ========================================
         FILTRAR PRODUCTOS
