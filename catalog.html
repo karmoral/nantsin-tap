@@ -84,47 +84,36 @@
             box-shadow: 0 0 0 3px rgba(109, 143, 88, 0.12);
         }
 
-/*
-========================================
-CATEGORÍAS (Fijas: Vivero, Frutas y Verduras, Restaurante, Taller)
-========================================
-*/
+        /* =========================
+           CATEGORÍAS
+        ========================= */
 
-function createCategories() {
+        .categories {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
 
-    const mainCategories = [
-        { name: "Todos", key: "all" },
-        { name: "Vivero", key: "plantas, suculentas, arboles, fertilizante, sustrato, jardin" },
-        { name: "Frutas y Verduras", key: "frutas y verduras, legumbres, plátano, chile, piña, aguacate, nopal, verdura" },
-        { name: "Restaurante", key: "comida preparada, platillos, bebidas, agua, chocolate, pozol, panadería, pasteles" },
-        { name: "Taller", key: "taller, servicios" }
-    ];
+        .category-btn {
+            border: none;
+            background: white;
+            color: #4f6f3f;
+            border: 1px solid #d7d7d7;
+            padding: 10px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 14px;
+        }
 
-    mainCategories.forEach(cat => {
-        const button = document.createElement("button");
-        button.className = "category-btn";
-        if (cat.key === "all") button.classList.add("active");
-        
-        button.dataset.category = cat.key;
-        button.textContent = cat.name;
+        .category-btn:hover,
+        .category-btn.active {
+            background: #4f6f3f;
+            color: white;
+        }
 
-        categoriesContainer.appendChild(button);
-    });
-
-    document.querySelectorAll(".category-btn").forEach(button => {
-        button.addEventListener("click", () => {
-            document.querySelectorAll(".category-btn").forEach(btn =>
-                btn.classList.remove("active")
-            );
-
-            button.classList.add("active");
-            currentCategory = button.dataset.category;
-
-            filterProducts();
-        });
-    });
-
-}
         /* =========================
            CONTADOR
         ========================= */
@@ -1079,53 +1068,75 @@ function createCategories() {
         }
 
 
-       /*
-========================================
-FILTRAR PRODUCTOS
-========================================
-*/
-
-function filterProducts() {
-
-    const search = searchInput.value.toLowerCase().trim();
-
-    filteredProducts = products.filter(product => {
-
-        const title = String(product.Title || "").toLowerCase();
-        const description = String(product["Body (HTML)"] || "").toLowerCase();
-        const category = String(product["Product Category"] || "").toLowerCase();
-        const type = String(product["Type"] || "").toLowerCase();
-
         /*
-        Buscador general por texto
+        ========================================
+        FILTRAR PRODUCTOS
+        ========================================
         */
-        const matchesSearch = !search ||
-            title.includes(search) ||
-            description.includes(search) ||
-            category.includes(search);
 
-        /*
-        Filtrado por las 4 categorías principales
-        */
-        let matchesCategory = true;
+        function filterProducts() {
 
-        if (currentCategory !== "all") {
-            const keywords = currentCategory.split(",").map(k => k.trim());
-            
-            matchesCategory = keywords.some(keyword => 
-                category.includes(keyword) || 
-                title.includes(keyword) || 
-                type.includes(keyword)
-            );
+            const search =
+                searchInput.value
+                    .toLowerCase()
+                    .trim();
+
+
+            filteredProducts =
+                products.filter(product => {
+
+                    const title =
+                        String(
+                            product.Title || ""
+                        ).toLowerCase();
+
+
+                    const description =
+                        String(
+                            product["Body (HTML)"] || ""
+                        ).toLowerCase();
+
+
+                    const category =
+                        String(
+                            product["Product Category"] || ""
+                        ).toLowerCase();
+
+
+                    /*
+                    Buscar
+                    */
+
+                    const matchesSearch =
+                        !search ||
+                        title.includes(search) ||
+                        description.includes(search) ||
+                        category.includes(search);
+
+
+                    /*
+                    Categoría
+                    */
+
+                    const matchesCategory =
+                        currentCategory === "all" ||
+                        product["Product Category"] ===
+                        currentCategory;
+
+
+                    return (
+                        matchesSearch &&
+                        matchesCategory
+                    );
+
+                });
+
+
+            renderProducts();
+
         }
 
-        return matchesSearch && matchesCategory;
 
-    });
-
-    renderProducts();
-
-}
         /*
         ========================================
         BUSCADOR
