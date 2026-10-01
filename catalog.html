@@ -1072,6 +1072,108 @@
         CATEGORÍAS (Nombres cortos sin la ruta completa)
         ========================================
         */
+
+function getCustomCategory(product) {
+            const categoryPath = String(product["Product Category"] || "").toLowerCase();
+            const title = String(product.Title || "").toLowerCase();
+
+            // Vivero / Plantas
+            if (
+                categoryPath.includes("plantas") ||
+                categoryPath.includes("jardín") ||
+                categoryPath.includes("árboles") ||
+                categoryPath.includes("fertilizantes") ||
+                title.includes("planta") ||
+                title.includes("antulio") ||
+                title.includes("menta") ||
+                title.includes("áloe")
+            ) {
+                return "Vivero";
+            }
+
+            // Restaurante / Alimentos
+            if (
+                categoryPath.includes("alimentación") ||
+                categoryPath.includes("alimentos") ||
+                categoryPath.includes("bebidas") ||
+                categoryPath.includes("comida") ||
+                categoryPath.includes("pasteles") ||
+                categoryPath.includes("chocolate") ||
+                title.includes("pozol") ||
+                title.includes("coca cola") ||
+                title.includes("café") ||
+                title.includes("rambutan")
+            ) {
+                return "Restaurante";
+            }
+
+            // Cuidado Personal
+            if (
+                categoryPath.includes("cuidado personal") ||
+                categoryPath.includes("salud y belleza") ||
+                categoryPath.includes("jabón")
+            ) {
+                return "Cuidado Personal";
+            }
+
+            // Arte y Talleres
+            if (
+                categoryPath.includes("arte y ocio") ||
+                categoryPath.includes("manualidades") ||
+                categoryPath.includes("entradas")
+            ) {
+                return "Arte y Talleres";
+            }
+
+            // Materiales y Bricolaje
+            if (
+                categoryPath.includes("bricolaje") ||
+                categoryPath.includes("madera") ||
+                categoryPath.includes("alambre")
+            ) {
+                return "Materiales";
+            }
+
+            // Servicios
+            if (categoryPath.includes("servicios")) {
+                return "Servicios";
+            }
+
+            return "Otros";
+        }
+
+        function createCategories() {
+            const categorySet = new Set();
+
+            products.forEach(product => {
+                const customCat = getCustomCategory(product);
+                categorySet.add(customCat);
+            });
+
+            categoriesContainer.innerHTML = `
+                Todos
+            `;
+
+            Array.from(categorySet)
+                .sort()
+                .forEach(catName => {
+                    const button = document.createElement("button");
+                    button.className = "category-btn";
+                    button.dataset.category = catName;
+                    button.textContent = catName;
+                    categoriesContainer.appendChild(button);
+                });
+
+            document.querySelectorAll(".category-btn").forEach(button => {
+                button.addEventListener("click", () => {
+                    document.querySelectorAll(".category-btn").forEach(btn => btn.classList.remove("active"));
+                    button.classList.add("active");
+                    currentCategory = button.dataset.category;
+                    filterProducts();
+                });
+            });
+        }
+        
 /*
         ========================================
         MAPEO DE CATEGORÍAS PERSONALIZADAS
