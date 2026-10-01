@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Productos - Tienda Interactiva</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-emerald-500 selection:text-white">
+
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('home')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
+                    <i class="fa-solid fa-store text-lg"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-lg bg-gradient-to-r from-emerald-700 to-teal-600 bg-clip-text text-transparent">ShopFlow GitHub</span>
+                    <span class="block text-xs text-slate-400 font-medium">Catálogo & WhatsApp</span>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+                <button onclick="switchView('home')" class="text-slate-600 hover:text-emerald-600 transition">Inicio</button>
+                <button onclick="switchView('catalog')" class="text-slate-600 hover:text-emerald-600 transition">Catálogo</button>
+                <button onclick="switchView('github-guide')" class="text-slate-600 hover:text-emerald-600 transition flex items-center gap-1.5"><i class="fa-brands fa-github text-base"></i> Guía GitHub</button>
+            </nav>
+            <div class="flex items-center gap-3">
+                <button onclick="switchView('catalog')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-xl text-sm transition shadow-md shadow-emerald-600/20 flex items-center gap-2">
+                    <i class="fa-solid fa-bag-shopping"></i> Ver Catálogo
+                </button>
+                <button onclick="mobileMenuToggle()" class="md:hidden text-slate-600 p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-2">
+            <button onclick="switchView('home'); mobileMenuToggle();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-100 font-medium text-slate-700">Inicio</button>
+            <button onclick="switchView('catalog'); mobileMenuToggle();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-100 font-medium text-slate-700">Catálogo</button>
+            <button onclick="switchView('github-guide'); mobileMenuToggle();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-100 font-medium text-slate-700">Guía GitHub</button>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+
+        <!-- VIEW 1: HOME / LANDING -->
+        <section id="view-home" class="relative overflow-hidden py-16 md:py-24">
+            <div class="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50/30 to-white -z-10"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6 text-center lg:text-left">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold tracking-wide uppercase shadow-sm">
+                            <i class="fa-solid fa-bolt text-emerald-600"><span>Catálogo con Imagen, Título, Descripción y Precio</span></i>
+                        </div>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                            Tu Catálogo Online <span class="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Listo para WhatsApp</span>
+                        </h1>
+                        <p class="text-lg text-slate-600 max-w-xl mx-auto lg:mx-0">
+                            Explora los productos con sus imágenes, descripciones completas y precios. Aparta cualquier artículo al instante vía WhatsApp al <span class="font-semibold text-slate-900">5584038535</span>.
+                        </p>
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                            <button onclick="switchView('catalog')" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-8 py-4 rounded-xl shadow-lg shadow-emerald-600/30 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-3 text-base">
+                                <i class="fa-solid fa-rocket"></i> Entrar al Catálogo
+                            </button>
+                            <button onclick="switchView('github-guide')" class="w-full sm:w-auto bg-white hover:bg-slate-100 text-slate-700 font-semibold px-6 py-4 rounded-xl border border-slate-300 transition flex items-center justify-center gap-2 text-base">
+                                <i class="fa-brands fa-github text-lg"></i> Desplegar en GitHub
+                            </button>
+                        </div>
+                        <div class="pt-6 flex items-center justify-center lg:justify-start gap-6 text-slate-500 text-sm">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-check text-emerald-600"></i> WhatsApp 5584038535
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-check text-emerald-600"></i> Carga CSV Shopify
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="relative mx-auto max-w-md lg:max-w-none bg-white p-6 rounded-3xl shadow-2xl border border-slate-100">
+                            <div class="absolute -top-3 -right-3 bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                                Destacado
+                            </div>
+                            <div class="space-y-4">
+                                <div class="h-48 bg-slate-100 rounded-2xl overflow-hidden relative flex items-center justify-center">
+                                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80" alt="Producto demo" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-bold text-lg text-slate-800">Smartwatch Serie 7 Edición Titanio</h3>
+                                    </div>
+                                    <span class="text-lg font-black text-emerald-700">$1,499.00</span>
+                                </div>
+                                <p class="text-xs text-slate-500 line-clamp-2">Monitor de frecuencia cardíaca avanzado, GPS integrado, resistente al agua 5ATM y batería de larga duración.</p>
+                                <div class="pt-2">
+                                    <button onclick="switchView('catalog')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-xl transition text-sm flex items-center justify-center gap-2">
+                                        <i class="fa-brands fa-whatsapp text-lg"></i> APARTAR (5584038535)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 2: CATALOG SECTION -->
+        <section id="view-catalog" class="hidden py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Catálogo de Productos</h2>
+                    <p class="text-sm text-slate-500">Visualiza Imagen, Título, Descripción (Body HTML), Precio y aparta vía WhatsApp.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <label class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-4 py-2.5 rounded-xl cursor-pointer shadow-sm transition flex items-center gap-2">
+                        <i class="fa-solid fa-file-arrow-up"></i> Cargar tu CSV
+                        <input type="file" id="csv-file-input" accept=".csv, .txt" class="hidden" onchange="handleFileUpload(event)">
+                    </label>
+                    <button onclick="resetToSampleData()" class="bg-white hover:bg-slate-100 text-slate-700 font-medium text-sm px-4 py-2.5 rounded-xl border border-slate-300 transition flex items-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> Restaurar Productos
+                    </button>
+                    <div class="bg-white border border-slate-300 rounded-xl p-1 flex items-center">
+                        <button id="view-grid-btn" onclick="toggleLayout('grid')" class="px-3 py-1.5 rounded-lg text-sm bg-emerald-600 text-white transition"><i class="fa-solid fa-border-all"></i></button>
+                        <button id="view-table-btn" onclick="toggleLayout('table')" class="px-3 py-1.5 rounded-lg text-sm text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-table-list"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-8 flex flex-col sm:flex-row gap-4 items-center justify-between">
+                <div class="relative w-full sm:w-96">
+                    <i class="fa-solid fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="search-input" oninput="filterProducts()" placeholder="Buscar por título o descripción..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition">
+                </div>
+                <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                    <span id="product-count" class="text-xs font-semibold text-slate-500">0 productos cargados</span>
+                </div>
+            </div>
+
+            <!-- Status Messages Container -->
+            <div id="status-message" class="hidden mb-6 p-4 rounded-xl text-sm font-medium"></div>
+
+            <!-- CATALOG DISPLAY AREA: GRID VIEW -->
+            <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Javascript will populate cards here -->
+            </div>
+
+            <!-- CATALOG DISPLAY AREA: TABLE VIEW -->
+            <div id="catalog-table-container" class="hidden overflow-x-auto bg-white rounded-2xl shadow-sm border border-slate-200">
+                <table class="w-full text-left border-collapse text-xs md:text-sm">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-700 uppercase tracking-wider font-semibold border-b border-slate-200">
+                            <th class="p-3">Image Src</th>
+                            <th class="p-3">Title</th>
+                            <th class="p-3">Body (HTML)</th>
+                            <th class="p-3">Variant Price</th>
+                            <th class="p-3 text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="catalog-table-body" class="divide-y divide-slate-100">
+                        <!-- Javascript will populate table rows here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- VIEW 3: GITHUB GUIDE -->
+        <section id="view-github-guide" class="hidden py-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-10 space-y-8">
+                <div class="border-b border-slate-200 pb-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-800 text-xs font-bold uppercase tracking-wider mb-3">
+                        <i class="fa-brands fa-github text-base"></i> Guía de Despliegue
+                    </div>
+                    <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Cómo subir este proyecto a GitHub Pages</h2>
+                    <p class="text-sm text-slate-500 mt-2">Sigue estos sencillos pasos para alojar tu página web de forma gratuita con GitHub.</p>
+                </div>
+
+                <div class="space-y-6 text-sm text-slate-700 leading-relaxed">
+                    <div class="flex gap-4 items-start">
+                        <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center shrink-0">1</div>
+                        <div>
+                            <h3 class="font-bold text-base text-slate-900">Crear un repositorio en GitHub</h3>
+                            <p class="text-slate-600 mt-1">Inicia sesión en <a href="https://github.com" target="_blank" class="text-emerald-600 underline font-medium">GitHub</a>, haz clic en <strong class="text-slate-800">New</strong>, asígnale un nombre (ej. <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">catalogo-whatsapp</code>) y déjalo como <strong class="text-slate-800">Public</strong>.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 items-start">
+                        <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center shrink-0">2</div>
+                        <div>
+                            <h3 class="font-bold text-base text-slate-900">Guardar este código como <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">index.html</code></h3>
+                            <p class="text-slate-600 mt-1">Crea un archivo local con el nombre exacto <strong class="text-slate-800">index.html</strong> y pega todo el código completo de esta aplicación.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 items-start">
+                        <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center shrink-0">3</div>
+                        <div>
+                            <h3 class="font-bold text-base text-slate-900">Subir el archivo</h3>
+                            <p class="text-slate-600 mt-1">En tu repositorio, haz clic en <strong class="text-slate-800">upload an existing file</strong>, arrastra tu <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">index.html</code> y haz clic en <strong class="text-slate-800">Commit changes</strong>.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 items-start">
+                        <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center shrink-0">4</div>
+                        <div>
+                            <h3 class="font-bold text-base text-slate-900">Activar GitHub Pages</h3>
+                            <p class="text-slate-600 mt-1">Ve a <strong class="text-slate-800">Settings</strong> > <strong class="text-slate-800">Pages</strong>. En <em>Build and deployment</em> selecciona la rama <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">main</code> y guarda.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 items-start">
+                        <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center shrink-0">5</div>
+                        <div>
+                            <h3 class="font-bold text-base text-slate-900">¡Listo!</h3>
+                            <p class="text-slate-600 mt-1">GitHub te dará una URL pública donde tus clientes podrán ver las imágenes, títulos, descripciones y apartar directo al WhatsApp <strong class="text-slate-900 font-semibold">5584038535</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-circle-check text-emerald-600 text-xl"></i>
+                        <span class="text-sm font-medium text-emerald-900">¿Quieres probar ahora mismo?</span>
+                    </div>
+                    <button onclick="switchView('catalog')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs px-4 py-2 rounded-xl transition">
+                        Ver Catálogo
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            <div>
+                &copy; 2026 Catálogo Comercial. Pedidos directos vía WhatsApp: <span class="font-semibold text-slate-700">5584038535</span>
+            </div>
+            <div class="flex items-center space-x-6">
+                <button onclick="switchView('home')" class="hover:text-emerald-600 transition">Inicio</button>
+                <button onclick="switchView('catalog')" class="hover:text-emerald-600 transition">Catálogo</button>
+                <button onclick="switchView('github-guide')" class="hover:text-emerald-600 transition">Guía GitHub</button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Productos precargados basados en el archivo CSV adjunto (Image Src, Title, Body (HTML), Variant Price)
+        let products = [
+            {
+                handle: "smartwatch-titanio",
+                title: "Smartwatch Serie 7 Edición Titanio",
+                bodyHtml: "<p>Monitor de frecuencia cardíaca avanzado, GPS integrado, resistente al agua 5ATM y batería de larga duración.</p>",
+                productCategory: "Electrónica",
+                published: "TRUE",
+                option1Name: "Default Title",
+                variantPrice: "1499.00",
+                variantRequiresShipping: "TRUE",
+                unitPriceTotalMeasure: "1 unidad",
+                imageSrc: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80",
+                imagePosition: "1",
+                status: "active"
+            },
+            {
+                handle: "audifonos-bluetooth",
+                title: "Audífonos Inalámbricos Over-Ear ANC",
+                bodyHtml: "<p>Cancelación activa de ruido, sonido envolvente 360 y almohadillas viscoelásticas ultra confortables.</p>",
+                productCategory: "Audio",
+                published: "TRUE",
+                option1Name: "Negro Mate",
+                variantPrice: "899.50",
+                variantRequiresShipping: "TRUE",
+                unitPriceTotalMeasure: "1 pieza",
+                imageSrc: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
+                imagePosition: "1",
+                status: "active"
+            },
+            {
+                handle: "mochila-antirrobo",
+                title: "Mochila Ejecutiva Antirrobo USB",
+                bodyHtml: "<p>Compartimento acolchado para laptop de hasta 15.6 pulgadas, puerto de carga USB exterior e impermeable.</p>",
+                productCategory: "Accesorios",
+                published: "TRUE",
+                option1Name: "Gris Oxford",
+                variantPrice: "650.00",
+                variantRequiresShipping: "TRUE",
+                unitPriceTotalMeasure: "1 unidad",
+                imageSrc: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80",
+                imagePosition: "1",
+                status: "active"
+            },
+            {
+                handle: "camara-deportiva",
+                title: "Cámara Deportiva de Acción 4K Ultra",
+                bodyHtml: "<p>Incluye carcasa sumergible hasta 30 metros, control remoto de muñeca y doble batería de repuesto.</p>",
+                productCategory: "Fotografía",
+                published: "TRUE",
+                option1Name: "Negro",
+                variantPrice: "1899.00",
+                variantRequiresShipping: "TRUE",
+                unitPriceTotalMeasure: "Kit",
+                imageSrc: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80",
+                imagePosition: "1",
+                status: "active"
+            },
+            {
+                handle: "lentes-sol",
+                title: "Lentes de Sol Clásicos Polarizados UV400",
+                bodyHtml: "<p>Armazón de aleación ultraligera, cristales con protección total contra rayos UV y estuche rígido de regalo.</p>",
+                productCategory: "Moda",
+                published: "TRUE",
+                option1Name: "Carey",
+                variantPrice: "450.00",
+                variantRequiresShipping: "TRUE",
+                unitPriceTotalMeasure: "1 par",
+                imageSrc: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=600&q=80",
+                imagePosition: "1",
+                status: "active"
+            },
+            {
+                handle: "power-bank",
+                title: "Power Bank Carga Rápida 20,000 mAh",
+                bodyHtml: "<p>Salida dual USB y puerto tipo C PD 20W para recargar tu smartphone hasta 4 veces de forma segura.</p>",
+                productCategory: "Energía",
+                published: "TRUE",
+                option1Name: "Blanco",
+                variantPrice: "599.00",
+                variantRequiresShipping: "TRUE",
+                unitPriceTotalMeasure: "1 unidad",
+                imageSrc: "https://images.unsplash.com/photo-1609592806158-d543e49e083c?auto=format&fit=crop&w=600&q=80",
+                imagePosition: "1",
+                status: "active"
+            }
+        ];
+
+        let currentLayout = 'grid';
+
+        function switchView(viewName) {
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-catalog').classList.add('hidden');
+            document.getElementById('view-github-guide').classList.add('hidden');
+
+            if (viewName === 'home') {
+                document.getElementById('view-home').classList.remove('hidden');
+            } else if (viewName === 'catalog') {
+                document.getElementById('view-catalog').classList.remove('hidden');
+                renderProducts(products);
+            } else if (viewName === 'github-guide') {
+                document.getElementById('view-github-guide').classList.remove('hidden');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function mobileMenuToggle() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        function toggleLayout(layout) {
+            currentLayout = layout;
+            const gridBtn = document.getElementById('view-grid-btn');
+            const tableBtn = document.getElementById('view-table-btn');
+            const gridEl = document.getElementById('catalog-grid');
+            const tableEl = document.getElementById('catalog-table-container');
+
+            if (layout === 'grid') {
+                gridBtn.className = "px-3 py-1.5 rounded-lg text-sm bg-emerald-600 text-white transition";
+                tableBtn.className = "px-3 py-1.5 rounded-lg text-sm text-slate-600 hover:bg-slate-100 transition";
+                gridEl.classList.remove('hidden');
+                tableEl.classList.add('hidden');
+            } else {
+                tableBtn.className = "px-3 py-1.5 rounded-lg text-sm bg-emerald-600 text-white transition";
+                gridBtn.className = "px-3 py-1.5 rounded-lg text-sm text-slate-600 hover:bg-slate-100 transition";
+                tableEl.classList.remove('hidden');
+                gridEl.classList.add('hidden');
+            }
+            renderProducts(filterArray(document.getElementById('search-input').value));
+        }
+
+        // WhatsApp action for number 5584038535
+        function apartarProducto(title, price) {
+            const phoneNumber = "5584038535";
+            const text = `¡Hola! Me interesa apartar el siguiente producto:\n\n*${title}*\nPrecio: $${price} MXN\n\n¿Me confirman disponibilidad por favor?`;
+            const encodedText = encodeURIComponent(text);
+            window.open(`https://wa.me/${phoneNumber}?text=${encodedText}`, '_blank');
+        }
+
+        function renderProducts(list) {
+            const gridContainer = document.getElementById('catalog-grid');
+            const tableBody = document.getElementById('catalog-table-body');
+            const countEl = document.getElementById('product-count');
+
+            countEl.innerText = `${list.length} producto${list.length === 1 ? '' : 's'} disponible${list.length === 1 ? '' : 's'}`;
+
+            if (list.length === 0) {
+                gridContainer.innerHTML = `
+                    <div class="col-span-full py-16 text-center bg-white rounded-2xl border border-slate-200">
+                        <i class="fa-solid fa-box-open text-4xl text-slate-300 mb-3"></i>
+                        <p class="text-slate-600 font-medium">No se encontraron productos.</p>
+                        <button onclick="resetToSampleData()" class="mt-3 text-xs bg-emerald-600 text-white px-4 py-2 rounded-xl">Restaurar Productos</button>
+                    </div>
+                `;
+                tableBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-500">No hay productos.</td></tr>`;
+                return;
+            }
+
+            let gridHtml = '';
+            let tableHtml = '';
+
+            list.forEach(p => {
+                const cleanDesc = p.bodyHtml ? p.bodyHtml.replace(/<[^>]*>?/gm, '') : 'Sin descripción.';
+                const imgUrl = p.imageSrc && p.imageSrc.startsWith('http') ? p.imageSrc : 'https://placehold.co/600x400/e2e8f0/475569?text=Sin+Imagen';
+
+                // Grid Card showcasing Image Src, Title, Body (HTML), Variant Price, and APARTAR button
+                gridHtml += `
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col transition hover:shadow-md">
+                        <div class="h-52 bg-slate-100 overflow-hidden relative">
+                            <img src="${imgUrl}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/600x400/e2e8f0/475569?text=Imagen+No+Disponible'">
+                            <span class="absolute top-3 right-3 bg-emerald-700/90 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm shadow">
+                                $${p.variantPrice} MXN
+                            </span>
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-900">${p.title}</h3>
+                                <div class="text-xs text-slate-600 mt-2 line-clamp-3 leading-relaxed">${p.bodyHtml || cleanDesc}</div>
+                            </div>
+                            <div class="pt-3 border-t border-slate-100">
+                                <button onclick="apartarProducto('${escapeQuote(p.title)}', '${p.variantPrice}')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs py-3 px-4 rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center justify-center gap-2">
+                                    <i class="fa-brands fa-whatsapp text-base"></i> APARTAR (WHATSAPP)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Table Row showcasing Image Src, Title, Body (HTML), Variant Price, and APARTAR button
+                tableHtml += `
+                    <tr class="hover:bg-slate-50/80 transition">
+                        <td class="p-3">
+                            <img src="${imgUrl}" alt="${p.title}" class="w-14 h-14 rounded-xl object-cover border border-slate-200" onerror="this.src='https://placehold.co/100x100/e2e8f0/475569?text=Img'">
+                        </td>
+                        <td class="p-3 font-bold text-slate-900">${p.title}</td>
+                        <td class="p-3 text-slate-600 text-xs max-w-xs truncate">${cleanDesc}</td>
+                        <td class="p-3 font-bold text-emerald-700">$${p.variantPrice} MXN</td>
+                        <td class="p-3 text-center">
+                            <button onclick="apartarProducto('${escapeQuote(p.title)}', '${p.variantPrice}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-4 py-2 rounded-xl shadow-sm transition inline-flex items-center gap-1.5">
+                                <i class="fa-brands fa-whatsapp text-sm"></i> APARTAR
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            gridContainer.innerHTML = gridHtml;
+            tableBody.innerHTML = tableHtml;
+        }
+
+        function escapeQuote(str) {
+            return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+
+        function filterArray(query) {
+            const q = query.toLowerCase().trim();
+            if (!q) return products;
+            return products.filter(p => 
+                p.title.toLowerCase().includes(q) || 
+                (p.bodyHtml && p.bodyHtml.toLowerCase().includes(q))
+            );
+        }
+
+        function filterProducts() {
+            renderProducts(filterArray(document.getElementById('search-input').value));
+        }
+
+        function resetToSampleData() {
+            location.reload();
+        }
+
+        // CSV Parser matching Shopify standards
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                try {
+                    const parsedProducts = parseShopifyCSV(text);
+                    if (parsedProducts.length > 0) {
+                        products = parsedProducts;
+                        renderProducts(products);
+                        showNotification(`¡Éxito! Se cargaron ${products.length} productos correctamente.`, 'success');
+                    } else {
+                        showNotification('No se detectaron filas válidas en el archivo CSV.', 'error');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showNotification('Error al procesar el archivo CSV.', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function parseShopifyCSV(text) {
+            const lines = text.split(/\r\n|\n/);
+            if (lines.length < 2) return [];
+
+            const parseRow = (row) => {
+                const result = [];
+                let insideQuote = false;
+                let entry = '';
+                for (let i = 0; i < row.length; i++) {
+                    let char = row[i];
+                    if (char === '"') {
+                        insideQuote = !insideQuote;
+                    } else if (char === ',' && !insideQuote) {
+                        result.push(entry.trim());
+                        entry = '';
+                    } else {
+                        entry += char;
+                    }
+                }
+                result.push(entry.trim());
+                return result.map(val => val.replace(/^"|"$/g, ''));
+            };
+
+            const headers = parseRow(lines[0
