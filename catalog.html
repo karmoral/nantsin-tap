@@ -1072,54 +1072,121 @@
         CATEGORÍAS (Nombres cortos sin la ruta completa)
         ========================================
         */
+/*
+        ========================================
+        MAPEO DE CATEGORÍAS PERSONALIZADAS
+        ========================================
+        */
+
+        function getCustomCategory(product) {
+            const categoryPath = String(product["Product Category"] || "").toLowerCase();
+            const title = String(product.Title || "").toLowerCase();
+
+            // Vivero / Plantas
+            if (
+                categoryPath.includes("plantas") ||
+                categoryPath.includes("jardín") ||
+                categoryPath.includes("árboles") ||
+                categoryPath.includes("fertilizantes") ||
+                title.includes("planta") ||
+                title.includes("antulio") ||
+                title.includes("menta") ||
+                title.includes("áloe")
+            ) {
+                return "Vivero";
+            }
+
+            // Restaurante / Alimentos
+            if (
+                categoryPath.includes("alimentación") ||
+                categoryPath.includes("alimentos") ||
+                categoryPath.includes("bebidas") ||
+                categoryPath.includes("comida") ||
+                categoryPath.includes("pasteles") ||
+                categoryPath.includes("chocolate") ||
+                title.includes("pozol") ||
+                title.includes("coca cola") ||
+                title.includes("café") ||
+                title.includes("rambutan")
+            ) {
+                return "Restaurante";
+            }
+
+            // Cuidado Personal
+            if (
+                categoryPath.includes("cuidado personal") ||
+                categoryPath.includes("salud y belleza") ||
+                categoryPath.includes("jabón")
+            ) {
+                return "Cuidado Personal";
+            }
+
+            // Arte y Talleres
+            if (
+                categoryPath.includes("arte y ocio") ||
+                categoryPath.includes("manualidades") ||
+                categoryPath.includes("entradas")
+            ) {
+                return "Arte y Talleres";
+            }
+
+            // Materiales y Bricolaje
+            if (
+                categoryPath.includes("bricolaje") ||
+                categoryPath.includes("madera") ||
+                categoryPath.includes("alambre")
+            ) {
+                return "Materiales";
+            }
+
+            // Servicios
+            if (categoryPath.includes("servicios")) {
+                return "Servicios";
+            }
+
+            return "Otros";
+        }
+
+
+        /*
+        ========================================
+        CREAR BOTONES DE CATEGORÍAS
+        ========================================
+        */
 
         function createCategories() {
 
-            const categoryMap = new Map();
+            const categorySet = new Set();
 
             products.forEach(product => {
-                const categoryPath = product["Product Category"];
-                if (categoryPath && categoryPath.trim() !== "" && categoryPath !== "Sin categoría") {
-                    // Extraer la última parte de la ruta (ej. "Chocolate", "Plantas de interior en macetas", etc.)
-                    const parts = categoryPath.split(">").map(p => p.trim());
-                    const shortName = parts[parts.length - 1];
-                    
-                    // Guardar mapeo de nombre corto -> ruta completa (o usar el nombre corto para filtrar)
-                    categoryMap.set(shortName, categoryPath);
-                }
+                const customCat = getCustomCategory(product);
+                categorySet.add(customCat);
             });
 
-            // Limpiar contenedor y agregar botón "Todos"
             categoriesContainer.innerHTML = `
                 Todos
             `;
 
-            Array.from(categoryMap.keys())
+            Array.from(categorySet)
                 .sort()
-                .forEach(shortName => {
+                .forEach(catName => {
                     const button = document.createElement("button");
                     button.className = "category-btn";
-                    button.dataset.category = shortName;
-                    button.textContent = shortName;
+                    button.dataset.category = catName;
+                    button.textContent = catName;
                     categoriesContainer.appendChild(button);
                 });
 
-            // Eventos de clic
             document
                 .querySelectorAll(".category-btn")
                 .forEach(button => {
                     button.addEventListener("click", () => {
                         document
                             .querySelectorAll(".category-btn")
-                            .forEach(btn =>
-                                btn.classList.remove("active")
-                            );
+                            .forEach(btn => btn.classList.remove("active"));
 
                         button.classList.add("active");
-
-                        currentCategory =
-                            button.dataset.category;
-
+                        currentCategory = button.dataset.category;
                         filterProducts();
                     });
                 });
@@ -1135,69 +1202,39 @@
 
         function filterProducts() {
 
-            const search =
-                searchInput.value
-                    .toLowerCase()
-                    .trim();
+            const search = searchInput.value.toLowerCase().trim();
 
+            filteredProducts = products.filter(product => {
 
-            filteredProducts =
-                products.filter(product => {
+                const title = String(product.Title || "").toLowerCase();
+                const description = String(product["Body (HTML)" ] || "").toLowerCase();
+                const categoryPath = String(product["Product Category"] || "").toLowerCase();
 
-                    const title =
-                        String(
-                            product.Title || ""
-                        ).toLowerCase();
+                /*
+                Buscar por texto
+                */
+                const matchesSearch =
+                    !search ||
+                    title.includes(search) ||
+                    description.includes(search) ||
+                    categoryPath.includes(search);
 
+                /*
+                Filtrar por categoría amigable
+                */
+                let matchesCategory = true;
+                if (currentCategory !== "all") {
+                    const productCustomCat = getCustomCategory(product);
+                    matchesCategory = (productCustomCat === currentCategory);
+                }
 
-                    const description =
-                        String(
-                            product["Body (HTML)"] || ""
-                        ).toLowerCase();
+                return matchesSearch && matchesCategory;
 
-
-                    const categoryPath =
-                        String(
-                            product["Product Category"] || ""
-                        );
-
-
-                    /*
-                    Buscar por texto
-                    */
-
-                    const matchesSearch =
-                        !search ||
-                        title.includes(search) ||
-                        description.includes(search) ||
-                        categoryPath.toLowerCase().includes(search);
-
-
-                    /*
-                    Filtrar comparando con la última parte de la categoría del producto
-                    */
-
-                    let matchesCategory = true;
-
-                    if (currentCategory !== "all") {
-                        const parts = categoryPath.split(">").map(p => p.trim());
-                        const shortName = parts[parts.length - 1];
-                        matchesCategory = (shortName === currentCategory);
-                    }
-
-
-                    return (
-                        matchesSearch &&
-                        matchesCategory
-                    );
-
-                });
-
+            });
 
             renderProducts();
 
         }
-
         /*
         ========================================
         BUSCADOR
