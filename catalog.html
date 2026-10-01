@@ -65,25 +65,16 @@
            BUSCADOR
         ========================= */
 
-        .search-container {
-            margin-bottom: 20px;
-        }
+        /*
+========================================
+BUSCADOR
+========================================
+*/
 
-        #search {
-            width: 100%;
-            padding: 15px 18px;
-            border: 1px solid #ccc;
-            border-radius: 12px;
-            font-size: 16px;
-            outline: none;
-            background: white;
-        }
-
-        #search:focus {
-            border-color: #6d8f58;
-            box-shadow: 0 0 0 3px rgba(109, 143, 88, 0.12);
-        }
-
+searchInput.addEventListener(
+    "input",
+    filterProducts
+);
         /* =========================
            CATEGORÍAS
         ========================= */
@@ -976,103 +967,12 @@
         }
 
 
-        /*
-        ========================================
-        CATEGORÍAS
-        ========================================
-        
-
-        function createCategories() {
-
-            const categorySet =
-                new Set();
-
-
-            products.forEach(product => {
-
-                const category =
-                    product["Product Category"];
-
-                if (category) {
-
-                    categorySet.add(
-                        category.trim()
-                    );
-
-                }
-
-            });
-
-
-            Array.from(categorySet)
-                .sort()
-                .forEach(category => {
-
-                    const button =
-                        document.createElement("button");
-
-                    button.className =
-                        "category-btn";
-
-                    button.dataset.category =
-                        category;
-
-                    button.textContent =
-                        category;
-
-                    categoriesContainer
-                        .appendChild(button);
-
-                });
-
-
-            /*
-            Eventos
-            
-
-            document
-                .querySelectorAll(".category-btn")
-                .forEach(button => {
-
-                    button.addEventListener(
-                        "click",
-                        () => {
-
-                            document
-                                .querySelectorAll(
-                                    ".category-btn"
-                                )
-                                .forEach(btn =>
-                                    btn.classList.remove(
-                                        "active"
-                                    )
-                                );
-
-
-                            button.classList.add(
-                                "active"
-                            );
-
-
-                            currentCategory =
-                                button.dataset.category;
-
-
-                            filterProducts();
-
-                        }
-                    );
-
-                });
-
-        }
-        */
+      
 /*
         ========================================
         CATEGORÍAS (Nombres cortos sin la ruta completa)
         ========================================
         */
-
 function getCustomCategory(product) {
             const categoryPath = String(product["Product Category"] || "").toLowerCase();
             const title = String(product.Title || "").toLowerCase();
@@ -1173,83 +1073,6 @@ function getCustomCategory(product) {
                 });
             });
         }
-        
-/*
-        ========================================
-        MAPEO DE CATEGORÍAS PERSONALIZADAS
-        ========================================
-        */
-
-        function getCustomCategory(product) {
-            const categoryPath = String(product["Product Category"] || "").toLowerCase();
-            const title = String(product.Title || "").toLowerCase();
-
-            // Vivero / Plantas
-            if (
-                categoryPath.includes("plantas") ||
-                categoryPath.includes("jardín") ||
-                categoryPath.includes("árboles") ||
-                categoryPath.includes("fertilizantes") ||
-                title.includes("planta") ||
-                title.includes("antulio") ||
-                title.includes("menta") ||
-                title.includes("áloe")
-            ) {
-                return "Vivero";
-            }
-
-            // Restaurante / Alimentos
-            if (
-                categoryPath.includes("alimentación") ||
-                categoryPath.includes("alimentos") ||
-                categoryPath.includes("bebidas") ||
-                categoryPath.includes("comida") ||
-                categoryPath.includes("pasteles") ||
-                categoryPath.includes("chocolate") ||
-                title.includes("pozol") ||
-                title.includes("coca cola") ||
-                title.includes("café") ||
-                title.includes("rambutan")
-            ) {
-                return "Restaurante";
-            }
-
-            // Cuidado Personal
-            if (
-                categoryPath.includes("cuidado personal") ||
-                categoryPath.includes("salud y belleza") ||
-                categoryPath.includes("jabón")
-            ) {
-                return "Cuidado Personal";
-            }
-
-            // Arte y Talleres
-            if (
-                categoryPath.includes("arte y ocio") ||
-                categoryPath.includes("manualidades") ||
-                categoryPath.includes("entradas")
-            ) {
-                return "Arte y Talleres";
-            }
-
-            // Materiales y Bricolaje
-            if (
-                categoryPath.includes("bricolaje") ||
-                categoryPath.includes("madera") ||
-                categoryPath.includes("alambre")
-            ) {
-                return "Materiales";
-            }
-
-            // Servicios
-            if (categoryPath.includes("servicios")) {
-                return "Servicios";
-            }
-
-            return "Otros";
-        }
-
-
         /*
         ========================================
         CREAR BOTONES DE CATEGORÍAS
